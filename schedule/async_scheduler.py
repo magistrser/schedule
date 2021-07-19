@@ -46,7 +46,8 @@ class AsyncScheduler(Scheduler):
 
     async def run_pending(self):
         runnable_jobs = (job for job in self.jobs if job.should_run)
-        await asyncio.gather(*[self._run_job(job) for job in runnable_jobs])
+        for job in runnable_jobs:
+            await self._run_job(job)
 
     run_pending.__doc__ = _inherit_doc(Scheduler.run_pending.__doc__)
 
